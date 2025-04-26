@@ -23,6 +23,55 @@ const FinancialStatus = require('./financialStatus')(
 const LegalStatus = require('./legalStatus')(sequelize, Sequelize.DataTypes);
 const SaleStatus = require('./saleStatus')(sequelize, Sequelize.DataTypes);
 
+// Associations
+
+// Lead assigned to a User (sales agent)
+Lead.belongsTo(User, {
+  foreignKey: 'assigned_sales_agent_id',
+  as: 'assignedSalesAgent',
+});
+
+// LeadDetails belong to Lead
+LeadDetails.belongsTo(Lead, { foreignKey: 'lead_id' });
+
+// LeadLocationPreferences belong to LeadDetails
+LocationPreferences.belongsTo(LeadDetails, {
+  foreignKey: 'lead_details_id',
+});
+
+// FollowUpStatus belong to LeadDetails
+FollowUpStatus.belongsTo(LeadDetails, { foreignKey: 'lead_details_id' });
+
+// LeadInterest belongs to LeadDetails
+LeadInterest.belongsTo(LeadDetails, { foreignKey: 'lead_details_id' });
+
+// LeadInterest belongs to Property
+LeadInterest.belongsTo(Property, { foreignKey: 'property_id' });
+
+// Reservation belongs to LeadDetails
+Reservation.belongsTo(LeadDetails, { foreignKey: 'lead_details_id' });
+
+// Reservation belongs to Property
+Reservation.belongsTo(Property, { foreignKey: 'property_id' });
+
+// FinancialStatus belongs to Reservation
+FinancialStatus.belongsTo(Reservation, { foreignKey: 'reservation_id' });
+
+// FinancialStatus belongs to User (finance user)
+FinancialStatus.belongsTo(User, {
+  foreignKey: 'finance_user_id',
+  as: 'financeUser',
+});
+
+// LegalStatus belongs to Reservation
+LegalStatus.belongsTo(Reservation, { foreignKey: 'reservation_id' });
+
+// LegalStatus belongs to User (legal user)
+LegalStatus.belongsTo(User, { foreignKey: 'legal_user_id', as: 'legalUser' });
+
+// SaleStatus belongs to Reservation
+SaleStatus.belongsTo(Reservation, { foreignKey: 'reservation_id' });
+
 const db = {
   sequelize,
   User,
