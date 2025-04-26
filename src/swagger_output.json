@@ -20,6 +20,45 @@
           }
         }
       }
+    },
+    "/api/leads/": {
+      "post": {
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "example": "any"
+                  },
+                  "email": {
+                    "example": "any"
+                  },
+                  "phone": {
+                    "example": "any"
+                  },
+                  "source": {
+                    "example": "any"
+                  },
+                  "inquiry_date": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

@@ -11,6 +11,11 @@ app.use(express.json());
 // Swagger docs
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
+//Routes
+const leadRouter = require('./routes/leadRoute');
+
+app.use('/api/leads', leadRouter);
+
 app.get('/api', (req, res) => {
   res.send('🏡 Real Estate CRM API is running');
 });
