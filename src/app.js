@@ -17,7 +17,11 @@ app.get('/api', (req, res) => {
 
 sequelize
   .authenticate()
-  .then(() => console.log('Database connected!'))
+  .then(() => {
+    console.log('Database connected!');
+    // Sync all models
+    sequelize.sync().then(() => console.log('Models synced'));
+  })
   .catch('Database not connected');
 
 const PORT = process.env.PORT || 3000;
