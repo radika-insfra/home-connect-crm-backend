@@ -2,11 +2,16 @@ require('dotenv').config();
 
 const express = require('express');
 const sequelize = require('./config/db');
+const swaggerUi = require('swagger-ui-express');
+const swaggerFile = require('./swagger_output.json');
 
 const app = express();
 app.use(express.json());
 
-app.get('/', (req, res) => {
+// Swagger docs
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
+app.get('/api', (req, res) => {
   res.send('🏡 Real Estate CRM API is running');
 });
 
