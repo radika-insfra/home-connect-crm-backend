@@ -1,10 +1,11 @@
-const { body, validationResult } = require('express-validator');
+const { body, param, validationResult } = require('express-validator');
 const {
   stringField,
   requiredField,
   emailInvalid,
   emailRequired,
   dateField,
+  numberField,
 } = require('../../constants/vaidationMessages');
 
 // Validate Lead Creation
@@ -36,6 +37,21 @@ const validateLeadCreation = [
     .withMessage(requiredField('Lead inquiry date')),
 ];
 
+// Validate Lead Assignment
+const validateLeadAssignment = [
+  param('leadId')
+    .isInt()
+    .withMessage(numberField('Lead ID'))
+    .notEmpty()
+    .withMessage(requiredField('Lead ID')),
+
+  body('salesAgentId')
+    .isInt()
+    .withMessage(numberField('Sales Agent ID'))
+    .notEmpty()
+    .withMessage(requiredField('Sales Agent ID')),
+];
+
 // Middleware to handle validation errors
 const handleValidationErrors = (req, res, next) => {
   const errors = validationResult(req);
@@ -47,5 +63,6 @@ const handleValidationErrors = (req, res, next) => {
 
 module.exports = {
   validateLeadCreation,
+  validateLeadAssignment,
   handleValidationErrors,
 };
