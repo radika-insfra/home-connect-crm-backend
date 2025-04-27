@@ -9,7 +9,7 @@ async function seed() {
     // 1. Create a user (Sales agent)
     const user = await db.User.create({
       name: 'John Doe',
-      email: 'john@example.com',
+      email: 'hello@radikadilanka.com',
       phone: '1234567890',
       role: 'sales_agent',
     });
