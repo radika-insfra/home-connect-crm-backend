@@ -4,6 +4,40 @@
 
 This repository contains the backend for the Home Connect CRM system, which handles the lead lifecycle management for a real estate company. The system tracks leads through various stages, from inquiry to final sale, ensuring data integrity, smooth transitions between stages, and role-based access control for users.
 
+--- 
+
+## 🔐 Role Permissions Setup
+
+There are four distinct roles involved in the system, each responsible for specific phases of the lead lifecycle:
+
+| **Role**       | **Permissions** |
+|----------------|-----------------|
+| **Admin**      | Assign leads, view all leads, create users, manage system settings |
+| **Sales Agent** | View and update assigned leads, create reservations, cancel reservations (only for their own leads) |
+| **Finance Team** | Review reservation financials, approve or reject financing |
+| **Legal Team** | Finalize legal documents, upload contract notes |
+
+---
+
+## 📄 Role Permissions Table
+
+| **Role**        | **View Leads** | **Assign Leads** | **Create Reservation** | **Approve Finance** | **Finalize Legal** | **Cancel Reservation** |
+|-----------------|----------------|------------------|-------------------------|---------------------|--------------------|-------------------------|
+| **Admin**       | ✅ All          | ✅                | ❌                      | ❌                  | ❌                 | ❌                      |
+| **Sales Agent** | ✅ Own          | ❌                | ✅ (own leads)           | ❌                  | ❌                 | ✅ (own leads)           |
+| **Finance Team**| ✅ All          | ❌                | ❌                      | ✅                  | ❌                 | ❌                      |
+| **Legal Team**  | ✅ All          | ❌                | ❌                      | ❌                  | ✅                 | ❌                      |
+
+---
+
+### 📌 Notes:
+
+- **Admin** has full system control but does **not** interfere in Finance or Legal stages.
+- **Sales Agents** operate mainly during the early and middle stages of the lead lifecycle.
+- **Finance** and **Legal** teams are involved after a reservation is created.
+- **Cancel Reservation** is allowed **only** during the Reservation stage, and **only** by the **Sales Agent** who owns the lead.
+
+
 ## Assumptions & Clarifications
 
 ### A-01: Preferred Property Type – Capture Timing
