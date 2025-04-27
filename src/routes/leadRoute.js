@@ -4,6 +4,7 @@ const leadController = require('../controllers/leadController');
 const {
   validateLeadCreation,
   handleValidationErrors,
+  validateLeadAssignment,
 } = require('../middlewares/validations/leadValidation');
 const roleCheck = require('../middlewares/roleCheck');
 
@@ -16,6 +17,12 @@ router.post(
 );
 
 // Route for assigning leads (Admins only)
-router.post('/:leadId/assign', roleCheck(['admin']), leadController.assignLead);
+router.post(
+  '/:leadId/assign',
+  roleCheck(['admin']), // First: is the user allowed
+  validateLeadAssignment, // then validate
+  handleValidationErrors,
+  leadController.assignLead
+);
 
 module.exports = router;
