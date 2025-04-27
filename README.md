@@ -96,13 +96,13 @@ This repository contains the backend for the Home Connect CRM system, which hand
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/home-connect/lead-lifecycle-management.git
-   cd lead-lifecycle-management
+   git clone https://github.com/radika-insfra/home-connect-crm-backend.git
+   cd home-connect-crm-backend
    ```
 
 2 Install dependencies:
 
-    ``npm install``
+    npm install
 
 3. Set up the environment variables:
 
