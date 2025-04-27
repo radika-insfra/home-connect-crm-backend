@@ -3,10 +3,12 @@ const router = express.Router();
 const leadController = require('../controllers/leadController');
 const {
   validateLeadCreation,
-  handleValidationErrors,
   validateLeadAssignment,
 } = require('../middlewares/validations/leadValidation');
 const roleCheck = require('../middlewares/roleCheck');
+const {
+  handleValidationErrors,
+} = require('../middlewares/validationErrorHandler');
 
 // Route for creating leads (public)
 router.post(
