@@ -10,7 +10,7 @@ async function createLead(req, res) {
 
   try {
     // Step 1: Create the lead record
-    const newLead = await leadService.createLead(
+    const newLead = await leadService.create(
       name,
       email,
       phone,
@@ -21,7 +21,7 @@ async function createLead(req, res) {
 
     // Step 2: Create the lead_details record
     // In case preferred_property_type is not provided, it defaults to null
-    const leadDetails = await leadDetailsService.createLeadDetails(
+    const leadDetails = await leadDetailsService.create(
       newLead.id, // Link lead details to the created lead
       preferred_property_type || null, // If not provided, it will be null
       t // Ensure the transaction is applied here too
@@ -55,7 +55,7 @@ async function assignLead(req, res) {
 
     const { salesAgentId } = req.body;
 
-    const updatedLead = await leadService.assignLead(leadId, salesAgentId);
+    const updatedLead = await leadService.assign(leadId, salesAgentId);
 
     res
       .status(200)
