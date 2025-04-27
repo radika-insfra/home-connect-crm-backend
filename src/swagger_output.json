@@ -52,6 +52,9 @@
                   },
                   "inquiry_date": {
                     "example": "any"
+                  },
+                  "preferred_property_type": {
+                    "example": "any"
                   }
                 }
               }
