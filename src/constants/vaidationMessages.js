@@ -24,6 +24,10 @@ module.exports = {
   financialStatusInvalid: () =>
     `Financial status must be either "approved" or "rejected".`,
 
+  // Array Validation Messages
+  arrayRequired: (field) =>
+    `${field} must be an array with at least one element.`,
+
   // Others
   interestLevelInvalid: () =>
     `Interest level must be a number between 1 and 10.`,
