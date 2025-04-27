@@ -31,6 +31,9 @@ Lead.belongsTo(User, {
   as: 'assignedSalesAgent',
 });
 
+// Lead has one LeadDetails
+Lead.hasOne(LeadDetails, { foreignKey: 'lead_id', as: 'lead_details' });
+
 // LeadDetails belong to Lead
 LeadDetails.belongsTo(Lead, { foreignKey: 'lead_id' });
 
