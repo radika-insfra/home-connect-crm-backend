@@ -1,6 +1,7 @@
 const { LeadDetails } = require('../models');
 
-async function create(leadId, preferredPropertyType, transaction) {
+async function create(leadId, preferredPropertyType, options) {
+  const { transaction } = options || {};
   try {
     const leadDetails = await LeadDetails.create(
       {

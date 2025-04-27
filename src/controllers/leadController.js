@@ -16,7 +16,7 @@ async function createLead(req, res) {
       phone,
       source,
       inquiry_date,
-      t // Pass transaction here to keep it consistent
+      { transaction: t } // Pass transaction here to keep it consistent
     );
 
     // Step 2: Create the lead_details record
@@ -24,7 +24,7 @@ async function createLead(req, res) {
     const leadDetails = await leadDetailsService.create(
       newLead.id, // Link lead details to the created lead
       preferred_property_type || null, // If not provided, it will be null
-      t // Ensure the transaction is applied here too
+      { transaction: t } // Ensure the transaction is applied here too
     );
 
     // Step 3: Commit the transaction if both operations succeed
@@ -44,6 +44,7 @@ async function createLead(req, res) {
 }
 
 async function assignLead(req, res) {
+  const t = await sequelize.transaction(); // Start a transaction to ensure atomicity
   try {
     const { leadId } = req.params; // Send lead id in the URL
 
@@ -55,7 +56,9 @@ async function assignLead(req, res) {
 
     const { salesAgentId } = req.body;
 
-    const updatedLead = await leadService.assign(leadId, salesAgentId);
+    const updatedLead = await leadService.assign(leadId, salesAgentId, {
+      transaction: t,
+    });
 
     res
       .status(200)

@@ -1,7 +1,7 @@
 const { Lead, User } = require('../models');
-const sequelize = require('../config/db');
 
-async function create(name, email, phone, source, inquiry_date, transaction) {
+async function create(name, email, phone, source, inquiry_date, options) {
+  const { transaction } = options || {};
   // Check if email already exists
   const existingLead = await Lead.findOne({ where: { email } });
   if (existingLead) {
@@ -24,9 +24,8 @@ async function create(name, email, phone, source, inquiry_date, transaction) {
   return newLead;
 }
 
-async function assign(leadId, salesAgentId) {
-  // Start a transaction
-  const t = await sequelize.transaction();
+async function assign(leadId, salesAgentId, options) {
+  const { transaction } = options || {};
 
   try {
     // Check if lead exists
@@ -51,15 +50,15 @@ async function assign(leadId, salesAgentId) {
     lead.status = 'assigned';
 
     // Save the lead inside the transaction
-    await lead.save({ transaction: t });
+    await lead.save({ transaction });
 
     // Commit the transaction
-    await t.commit();
+    await transaction.commit();
 
     return lead;
   } catch (error) {
     // If anything fails, roll back the transaction
-    await t.rollback();
+    await transaction.rollback();
     throw error;
   }
 }
