@@ -152,7 +152,7 @@ mysql -u username -p database_name < tables.sql
 
 5. Start the application:
 
-` npm start`
+`npm start`
 
 ---
 
@@ -163,6 +163,23 @@ To insert sample test data into the database, run the following command:
 ```bash
 node src/scripts/seedTestData.js
 ```
+
+---
+
+# Real Estate CRM API
+
+## Process Data Flow
+
+| **Step**                | **Inputs**                                                         | **Outputs**            | **Stores (Tables)**                              |
+|-------------------------|--------------------------------------------------------------------|------------------------|--------------------------------------------------|
+| **Capture Inquiry**      | Name, Email, Phone, Inquiry Date, Preferred Property Type         | New Lead               | `lead`, `lead_details`                           |
+| **Assign Lead**          | `salesAgentId`, `LeadId`                                           | Lead Status updated    | `lead`                                           |
+| **Update Lead Details**  | Budget (min and max), Preferred Property Type, Locations, Property Interests | Updated lead          | `lead_details`, `lead_location_preferences`, `lead_interest` |
+| **Mark Reservation**     | `PropertyId`, Reservation Fee, Expected Closing Date               | New Reservation        | `reservation`, `lead_details`                    |
+| **Financial Approval**   | Financial Status, Loan Amount, Payment Plan                        | Financial Status       | `financial_status`, `lead`                       |
+| **Legal Finalization**   | Contract signed status, Legal Notes                                | Legal Status           | `legal_status`, `lead`                           |
+| **Property Sold**        | Sale Date, Final Sale Price, Commission Details                    | Completed Sale, Customer | `lead`, `sale_status`                           |
+| **Follow Up**            | Follow up type, Notes                                             | Follow up history      | `follow_up_status`                               |
 
 ---
 
