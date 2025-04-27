@@ -1,7 +1,14 @@
 const { Lead, User } = require('../models');
 const sequelize = require('../config/db');
 
-async function createLead(name, email, phone, source, inquiry_date) {
+async function createLead(
+  name,
+  email,
+  phone,
+  source,
+  inquiry_date,
+  transaction
+) {
   // Check if email already exists
   const existingLead = await Lead.findOne({ where: { email } });
   if (existingLead) {
@@ -9,14 +16,17 @@ async function createLead(name, email, phone, source, inquiry_date) {
   }
 
   // Create the lead
-  const newLead = await Lead.create({
-    name,
-    email,
-    phone,
-    source,
-    inquiry_date,
-    status: 'unassigned',
-  });
+  const newLead = await Lead.create(
+    {
+      name,
+      email,
+      phone,
+      source,
+      inquiry_date,
+      status: 'unassigned',
+    },
+    { transaction }
+  );
 
   return newLead;
 }

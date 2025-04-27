@@ -1,21 +1,44 @@
 const leadService = require('../services/leadService');
+const leadDetailsService = require('../services/leadDetailsService');
+const sequelize = require('../config/db');
 
 async function createLead(req, res) {
-  try {
-    const { name, email, phone, source, inquiry_date } = req.body;
+  const { name, email, phone, source, inquiry_date, preferred_property_type } =
+    req.body;
 
+  const t = await sequelize.transaction(); // Start a transaction to ensure atomicity
+
+  try {
+    // Step 1: Create the lead record
     const newLead = await leadService.createLead(
       name,
       email,
       phone,
       source,
-      inquiry_date
+      inquiry_date,
+      t // Pass transaction here to keep it consistent
     );
-    res
-      .status(201)
-      .json({ message: 'Lead created successfully.', lead: newLead });
+
+    // Step 2: Create the lead_details record
+    // In case preferred_property_type is not provided, it defaults to null
+    const leadDetails = await leadDetailsService.createLeadDetails(
+      newLead.id, // Link lead details to the created lead
+      preferred_property_type || null, // If not provided, it will be null
+      t // Ensure the transaction is applied here too
+    );
+
+    // Step 3: Commit the transaction if both operations succeed
+    await t.commit();
+
+    res.status(201).json({
+      message: 'Lead and details created successfully.',
+      lead: newLead,
+      lead_details: leadDetails,
+    });
   } catch (error) {
-    console.error('Error creating lead:', error);
+    // Rollback the transaction if something goes wrong
+    await t.rollback();
+    console.error('Error creating lead and details:', error);
     res.status(400).json({ message: error.message });
   }
 }
